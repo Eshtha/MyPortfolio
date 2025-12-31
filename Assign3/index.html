@@ -54,6 +54,7 @@
       text-decoration:none;
       font-weight:600;
       transition:.2s;
+      display:inline-block;
     }
     nav a:hover{
       color:var(--accent);
@@ -146,7 +147,9 @@
       height:4px;
       background:linear-gradient(90deg,var(--accent),var(--accent-2));
       border-radius:2px;
-      animation:underlinePulse 3s ease-in-out infinite;
+      animation:underlinePulse 4s ease-in-out infinite;
+      transform-origin: left;
+
     }
     @keyframes underlinePulse{
       0%{transform:scaleX(1);}
@@ -271,9 +274,9 @@
 
         <div class="hero-actions">
           <a class="btn" href="#projects">View Projects</a>
-          <a class="btn secondary" href="https://github.com/Eshtha" target="_blank">GitHub</a>
+          <a class="btn secondary" href="https://github.com/Eshtha" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a class="btn secondary" href="https://docs.google.com/document/d/18buT2ylmbOYORMSBqbInajfoeKoYdVnFi9uuhv7_58I/edit?usp=drivesdk"
-            target="_blank">
+            target="_blank" rel="noopener noreferrer">
             Resume </a>
         </div>
       </div>
@@ -330,7 +333,7 @@
             I contributed to UI/UX, flow structuring, content planning, and front-end architecture.
           </p>
           <div class="tech">
-            Live: <a href="https://blockademia.live" target="_blank">blockademia.live</a>  
+            Live: <a href="https://blockademia.live" target="_blank" rel="noopener noreferrer">blockademia.live</a>  
             • Web UI • Frontend • Course Flow
           </div>
         </article>
@@ -381,12 +384,12 @@
 
         <div class="contact-item">
           <strong>GitHub</strong><br>
-          <a href="https://github.com/Eshtha" target="_blank">github.com/Eshtha</a>
+          <a href="https://github.com/Eshtha" target="_blank" rel="noopener noreferrer">github.com/Eshtha</a>
         </div>
 
         <div class="contact-item">
           <strong>LinkedIn</strong><br>
-          <a href="https://www.linkedin.com/in/eshtha-banga-4aa9b3381/" target="_blank">
+          <a href="https://www.linkedin.com/in/eshtha-banga-4aa9b3381/" target="_blank" rel="noopener noreferrer">
             linkedin.com/in/eshtha-banga
           </a>
         </div>
@@ -403,12 +406,3 @@
   </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
