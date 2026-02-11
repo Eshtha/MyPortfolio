@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eshtha | Premium Dev Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root { --spotify-green: #1db954; --spotify-dark: #121212; --spotify-card: #181818; --spotify-card-hover: #282828; }
+        body { background-color: #000; color: white; font-family: 'Circular', 'Helvetica Neue', Helvetica, Arial, sans-serif; overflow: hidden; }
+        
+        /* Layout */
+        .sidebar { background-color: #000; width: 260px; z-index: 10; display: flex; flex-direction: column; height: calc(100vh - 100px); }
+        .main-view { background-color: var(--spotify-dark); border-radius: 12px; margin: 8px 8px 100px 8px; overflow-y: auto; height: calc(100vh - 116px); position: relative; scroll-behavior: smooth; }
+        
+        /* Gradients & Backgrounds */
+        .spotify-gradient { background: linear-gradient(180deg, rgba(29,185,84,0.3) 0%, var(--spotify-dark) 400px); }
+        .glass-header { position: sticky; top: 0; z-index: 40; background: rgba(18, 18, 18, 0.7); backdrop-filter: blur(10px); padding: 16px 32px; transition: background 0.3s; border-bottom: 1px solid transparent; }
+        .glass-header.scrolled { border-bottom: 1px solid #282828; background: rgba(18, 18, 18, 0.95); }
+
+        /* Card Styling & Hover Effects */
+        .card { background: var(--spotify-card); border-radius: 8px; padding: 20px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); height: 100%; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid transparent; }
+        .card:hover { background: var(--spotify-card-hover); transform: translateY(-8px); border-color: rgba(29,185,84,0.3); box-shadow: 0 10px 30px -10px rgba(29,185,84,0.2); }
+        .play-btn { background: var(--spotify-green); width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: all 0.3s ease; transform: translateY(15px); box-shadow: 0 8px 8px rgba(0,0,0,0.3); }
+        .card:hover .play-btn { opacity: 1; transform: translateY(0); }
+        .resume-btn { background: #fff; color: #000; font-weight: bold; border-radius: 50px; padding: 14px 36px; transition: transform 0.2s, background 0.2s; }
+        .resume-btn:hover { transform: scale(1.05); background: #f0f0f0; }
+
+        /* Bulletproof Scroll Reveal Animations */
+        .scroll-reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .scroll-reveal.is-visible { opacity: 1; transform: translateY(0); }
+        
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+        
+        /* "Show More" section */
+        #extra-projects { transition: max-height 0.6s ease-in-out, opacity 0.6s ease-in-out; overflow: hidden; max-height: 0; opacity: 0; display: none; }
+        #extra-projects.show { max-height: 2000px; opacity: 1; display: grid; }
+        
+        /* Typing Effect */
+        .typing-text { border-right: 2px solid var(--spotify-green); white-space: nowrap; overflow: hidden; animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite; }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--spotify-green); } }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; border: 2px solid var(--spotify-dark); }
+        ::-webkit-scrollbar-thumb:hover { background: #888; }
+        .sidebar-scroll::-webkit-scrollbar { width: 6px; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: #333; }
+        .sidebar-scroll:hover::-webkit-scrollbar-thumb { background: #666; }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+
+    <div class="flex flex-1 overflow-hidden">
+        <aside class="sidebar p-6 hidden md:flex">
+            <div class="flex-shrink-0">
+                <div class="text-2xl font-bold flex items-center gap-3 mb-6 tracking-tighter hover:text-[var(--spotify-green)] transition cursor-pointer">
+                    <i class="fa-brands fa-spotify text-[var(--spotify-green)] text-3xl"></i> Eshtha.Dev
+                </div>
+                
+                <div class="bg-[#121212] rounded-xl p-2 flex flex-col gap-1 text-sm font-semibold text-gray-400 mb-4">
+                    <a href="#home" class="hover:text-white hover:bg-[#1a1a1a] p-3 rounded-md transition flex items-center gap-4"><i class="fa-solid fa-house text-xl"></i> Home</a>
+                    <a href="#about" class="hover:text-white hover:bg-[#1a1a1a] p-3 rounded-md transition flex items-center gap-4"><i class="fa-solid fa-user text-xl"></i> About Developer</a>
+                    <a href="#projects" class="hover:text-white hover:bg-[#1a1a1a] p-3 rounded-md transition flex items-center gap-4"><i class="fa-solid fa-compact-disc text-xl"></i> Discography</a>
+                </div>
+            </div>
+
+            <div class="bg-[#121212] p-5 rounded-xl flex flex-col gap-4 flex-1 overflow-y-auto sidebar-scroll">
+                <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2">My Library</p>
+                
+                <div class="flex flex-col gap-1 cursor-pointer group">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-users text-gray-400 group-hover:text-white transition"></i>
+                        <p class="font-bold text-white text-sm group-hover:text-[var(--spotify-green)] transition">Tech Tribe</p>
+                    </div>
+                    <div class="text-xs text-gray-400 ml-7">Core Tech Team Member</div>
+                </div>
+                
+                <hr class="border-gray-800 my-1">
+                
+                <div class="flex flex-col gap-1 cursor-pointer group">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-shield-halved text-gray-400 group-hover:text-white transition"></i>
+                        <p class="font-bold text-white text-sm group-hover:text-[var(--spotify-green)] transition">Thrylos</p>
+                    </div>
+                    <div class="text-xs text-gray-400 ml-7">Tech Admin</div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-view flex-1 spotify-gradient" id="scroll-container">
+            
+            <header class="glass-header flex justify-between items-center" id="main-header">
+                <div class="flex gap-2">
+                    <button class="w-8 h-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center hover:bg-opacity-80 transition"><i class="fa-solid fa-chevron-left text-white"></i></button>
+                    <button class="w-8 h-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center hover:bg-opacity-80 transition"><i class="fa-solid fa-chevron-right text-white"></i></button>
+                </div>
+                <button class="bg-black bg-opacity-60 rounded-full py-1 px-3 text-sm font-bold flex items-center gap-2 hover:scale-105 transition border border-gray-700 text-white">
+                    <img src="profile.jpeg" class="w-6 h-6 rounded-full object-cover border border-gray-500"> Eshtha
+                </button>
+            </header>
+
+            <div class="p-8 relative">
+                <section id="home" class="flex flex-col md:flex-row items-end gap-10 mb-10 pt-4 scroll-reveal">
+                    
+                    <img src="profile.jpeg" alt="Eshtha Cover Art" class="shadow-2xl rounded-full w-56 h-56 object-cover border-8 border-[#121212] hover:scale-105 transition duration-500">
+                        
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold uppercase tracking-widest text-white flex items-center gap-2 mb-2"><i class="fa-solid fa-circle-check text-blue-400 text-lg"></i> Verified Tech Prodigy</span>
+                        <h1 class="text-6xl md:text-9xl font-black my-2 tracking-tighter" style="text-shadow: 0 10px 30px rgba(0,0,0,0.5);">Eshtha</h1>
+                        <p class="text-gray-300 text-xl font-medium mt-2">Developer • AI/ML Specialist • CS Engineer</p>
+                        <p class="text-gray-400 text-sm mt-2">1,000,000+ Lines of Code Written</p>
+                    </div>
+                </section>
+
+                <div class="flex gap-6 mb-16 items-center scroll-reveal delay-100">
+                    <button class="text-7xl hover:scale-105 transition drop-shadow-lg"><i class="fa-solid fa-circle-play text-[var(--spotify-green)]"></i></button>
+                    <button class="resume-btn" onclick="window.open('https://1drv.ms/w/c/d0bc5f956f6d5bf2/IQCG63uA4I7JQZptZoHYQvdMAfMK7Ol2LXb072tyoW7x92k?e=KFcIfj', '_blank')">Follow (Resume)</button>
+                    <button class="w-10 h-10 border border-gray-400 rounded-full flex items-center justify-center hover:border-white hover:text-white text-gray-400 transition text-xl"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+
+                <section id="about" class="mb-16 scroll-reveal">
+                    <h2 class="text-2xl font-bold mb-6 hover:underline cursor-pointer">About the Developer</h2>
+                    <div class="bg-gradient-to-r from-[#181818] to-[#121212] p-8 rounded-xl border border-gray-800 hover:border-gray-600 transition">
+                        <div class="inline-block mb-4">
+                            <p class="typing-text text-[var(--spotify-green)] font-mono text-lg">System.out.println("Hello, World!");</p>
+                        </div>
+                        <p class="text-gray-300 leading-relaxed text-lg mb-4">
+                            I am a Computer Science Engineering student with a deep-rooted passion for Artificial Intelligence, Machine Learning, and Web Designing. My journey is fueled by a desire to build interactive, and highly functional digital experiences.
+                        </p>
+                        <p class="text-gray-400 leading-relaxed">
+                            When I'm not configuring neural networks or writing smart contracts, I'm contributing to the core tech teams at <strong class="text-white">Tech Tribe</strong> and leading tech administration at <strong class="text-white">Thrylos</strong>. I treat coding like composing music—every line should have a purpose, and the final product must resonate with the user.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="mb-16">
+                    <h2 class="text-2xl font-bold mb-6 hover:underline cursor-pointer scroll-reveal">Top Genres (Tech Stack)</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-4">
+                        
+                        <div class="card items-center text-center group scroll-reveal delay-100">
+                            <i class="fa-brands fa-html5 text-orange-500 text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">HTML5</p>
+                        </div>
+                        <div class="card items-center text-center group scroll-reveal delay-200">
+                            <i class="fa-brands fa-css3-alt text-blue-500 text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">CSS3</p>
+                        </div>
+                        <div class="card items-center text-center group scroll-reveal delay-300">
+                            <i class="fa-brands fa-js text-yellow-400 text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">JavaScript</p>
+                        </div>
+                        
+                        <div class="card items-center text-center group scroll-reveal delay-100">
+                            <i class="fa-brands fa-react text-blue-400 text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">React.js</p>
+                        </div>
+                        <div class="card items-center text-center group scroll-reveal delay-200">
+                            <i class="fa-brands fa-node-js text-green-500 text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">Node.js</p>
+                        </div>
+                        <div class="card items-center text-center group scroll-reveal delay-300">
+                            <i class="fa-solid fa-wind text-teal-400 text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">Tailwind</p>
+                        </div>
+
+                        <div class="card items-center text-center group scroll-reveal delay-100">
+                            <i class="fa-brands fa-python text-yellow-500 text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">Python</p>
+                        </div>
+                        <div class="card items-center text-center group scroll-reveal delay-200">
+                            <i class="fa-solid fa-brain text-pink-400 text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">Pandas & NumPy</p>
+                        </div>
+                        <div class="card items-center text-center group scroll-reveal delay-300">
+                            <i class="fa-solid fa-c text-blue-600 text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">C++</p>
+                        </div>
+                        
+                        <div class="card items-center text-center group scroll-reveal delay-200">
+                            <i class="fa-brands fa-git-alt text-red-500 text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">Git</p>
+                        </div>
+                        <div class="card items-center text-center group scroll-reveal delay-300">
+                            <i class="fa-brands fa-github text-white text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">GitHub</p>
+                        </div>
+                        <div class="card items-center text-center group scroll-reveal delay-100">
+                            <i class="fa-brands fa-figma text-orange-400 text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold">Figma</p>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="mb-16 scroll-reveal">
+                    <h2 class="text-2xl font-bold mb-6 hover:underline cursor-pointer">Listener Activity (GitHub)</h2>
+                    <div class="bg-[#181818] p-8 rounded-xl overflow-hidden flex flex-col xl:flex-row gap-6 items-center justify-center border border-gray-800 hover:border-gray-600 transition shadow-2xl">
+                        <img src="https://github-readme-stats.vercel.app/api?username=Eshtha&show_icons=true&theme=tokyonight&hide_border=true&bg_color=181818&title_color=1db954" alt="GitHub Stats" class="w-full xl:w-1/2 rounded hover:scale-105 transition duration-500">
+                        <img src="https://github-readme-streak-stats.herokuapp.com/?user=Eshtha&theme=tokyonight&hide_border=true&background=181818&ring=1db954&fire=1db954&currStreakLabel=1db954" alt="GitHub Streak" class="w-full xl:w-1/2 rounded hover:scale-105 transition duration-500">
+                    </div>
+                </section>
+
+                <section id="projects" class="mb-10">
+                    <div class="flex justify-between items-end mb-6 scroll-reveal">
+                        <h2 class="text-2xl font-bold hover:underline cursor-pointer">Popular Releases (Projects)</h2>
+                        <span class="text-sm font-bold text-gray-400 hover:text-white cursor-pointer uppercase tracking-wider">Show All</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                        <a href="https://blockademia.live" target="_blank" class="block h-full scroll-reveal delay-100">
+                            <div class="card relative group">
+                                <div class="h-48 bg-gradient-to-br from-purple-900 via-gray-900 to-black rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                                    <i class="fa-solid fa-cube text-7xl text-purple-400 group-hover:scale-125 group-hover:rotate-12 transition duration-500"></i>
+                                </div>
+                                <div class="play-btn absolute top-40 right-6 shadow-xl">
+                                    <i class="fa-solid fa-play text-black text-xl ml-1"></i>
+                                </div>
+                                <h3 class="font-bold text-xl mb-1 truncate">Blockademia</h3>
+                                <p class="text-sm text-gray-400 line-clamp-2">Decentralized Web3 platform revolutionizing academic credential verification using blockchain tech.</p>
+                                <div class="mt-4 flex gap-2">
+                                    <span class="text-xs bg-gray-800 px-2 py-1 rounded text-gray-300">Web3</span>
+                                    <span class="text-xs bg-gray-800 px-2 py-1 rounded text-gray-300">Blockchain</span>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="https://end-sem-slayer.vercel.app/" target="_blank" class="block h-full scroll-reveal delay-200">
+                            <div class="card relative group">
+                                <div class="h-48 bg-gradient-to-br from-red-900 via-gray-900 to-black rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                                    <i class="fa-solid fa-book-skull text-7xl text-red-400 group-hover:scale-125 group-hover:-rotate-12 transition duration-500"></i>
+                                </div>
+                                <div class="play-btn absolute top-40 right-6 shadow-xl">
+                                    <i class="fa-solid fa-play text-black text-xl ml-1"></i>
+                                </div>
+                                <h3 class="font-bold text-xl mb-1 truncate">End Sem Slayer</h3>
+                                <p class="text-sm text-gray-400 line-clamp-2">The ultimate student companion app designed to streamline exam preparation with curated resources.</p>
+                                <div class="mt-4 flex gap-2">
+                                    <span class="text-xs bg-gray-800 px-2 py-1 rounded text-gray-300">React</span>
+                                    <span class="text-xs bg-gray-800 px-2 py-1 rounded text-gray-300">Frontend</span>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="https://dream-space-ruddy.vercel.app/" target="_blank" class="block h-full scroll-reveal delay-300">
+                            <div class="card relative group">
+                                <div class="h-48 bg-gradient-to-br from-blue-900 via-gray-900 to-black rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                                    <i class="fa-solid fa-user-astronaut text-7xl text-blue-400 group-hover:scale-125 group-hover:rotate-12 transition duration-500"></i>
+                                </div>
+                                <div class="play-btn absolute top-40 right-6 shadow-xl">
+                                    <i class="fa-solid fa-play text-black text-xl ml-1"></i>
+                                </div>
+                                <h3 class="font-bold text-xl mb-1 truncate">DreamSpace</h3>
+                                <p class="text-sm text-gray-400 line-clamp-2">An interactive, visually immersive web experience built with modern frontend frameworks.</p>
+                                <div class="mt-4 flex gap-2">
+                                    <span class="text-xs bg-gray-800 px-2 py-1 rounded text-gray-300">UI/UX</span>
+                                    <span class="text-xs bg-gray-800 px-2 py-1 rounded text-gray-300">Animations</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div id="extra-projects" class="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                        <a href="#" class="block h-full">
+                            <div class="card relative group">
+                                <div class="h-40 bg-gray-800 rounded-lg mb-4 flex items-center justify-center">
+                                    <i class="fa-solid fa-microchip text-5xl text-gray-400 group-hover:text-white transition"></i>
+                                </div>
+                                <h3 class="font-bold text-lg mb-1">Arduino RC Car</h3>
+                                <p class="text-sm text-gray-400 line-clamp-2">Programmable remote-controlled vehicle powered by Arduino, showcasing hardware integration.</p>
+                            </div>
+                        </a>
+
+                        <a href="https://travelagency-weld.vercel.app/" target="_blank" class="block h-full scroll-reveal delay-300">
+                            <div class="card relative group">
+                                <div class="h-40 bg-gray-800 rounded-lg mb-4 flex items-center justify-center">
+                                    <i class="fa-solid fa-plane-departure text-5xl text-gray-400 group-hover:text-white transition"></i>
+                                </div>
+                                <div class="play-btn absolute top-40 right-6 shadow-xl">
+                                    <i class="fa-solid fa-play text-black text-xl ml-1"></i>
+                                </div>
+                                <h3 class="font-bold text-lg mb-1">Travel Agency App</h3>
+                                <p class="text-sm text-gray-400 line-clamp-2">Full-stack web application for booking travel itineraries with dynamic routing.</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flex justify-center mt-10 mb-8 scroll-reveal">
+                        <button id="toggle-projects" class="text-sm font-bold text-gray-300 hover:text-white transition border border-gray-500 rounded-full px-8 py-3 hover:border-white hover:scale-105">
+                            Show All Releases
+                        </button>
+                    </div>
+                </section>
+
+                <section class="mt-20 pt-10 border-t border-gray-800 scroll-reveal text-center">
+                    <h2 class="text-3xl font-black mb-4">Ready to Collaborate?</h2>
+                    <p class="text-gray-400 mb-8 max-w-lg mx-auto">Whether you want to discuss AI models, brainstorm a Web App Idea, or just talk tech, my inbox is always open.</p>
+                    <a href="mailto:your.email@example.com" class="inline-block bg-white text-black font-bold rounded-full px-10 py-4 hover:scale-105 transition hover:bg-gray-200">
+                        Send Fan Mail (Email Me)
+                    </a>
+                </section>
+                
+                <div class="h-10"></div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="h-[100px] bg-black border-t border-[#282828] fixed bottom-0 w-full px-4 flex items-center justify-between z-50">
+        <div class="flex items-center gap-4 w-1/4 md:w-1/3 group">
+            <div class="relative overflow-hidden rounded shadow-lg">
+                <img src="profile.jpeg" alt="Album Art" class="w-16 h-16 object-cover group-hover:scale-110 transition duration-500 border border-gray-800">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                    <i class="fa-solid fa-chevron-up text-white"></i>
+                </div>
+            </div>
+            <div class="hidden md:block">
+                <p class="text-sm font-semibold text-white cursor-pointer hover:underline">Eshtha Banga</p>
+                <p class="text-xs text-gray-400 cursor-pointer hover:underline">Developer Mode: ON</p>
+            </div>
+            <i class="fa-solid fa-heart text-[var(--spotify-green)] cursor-pointer hover:scale-110 transition hidden md:block"></i>
+        </div>
+
+        <div class="flex flex-col items-center gap-2 w-2/4 md:w-1/3">
+            <div class="flex items-center gap-6 md:gap-8 text-2xl text-gray-400">
+                <a href="https://github.com/Eshtha" target="_blank" class="hover:text-white transition hover:scale-125" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/eshtha-banga-4aa9b3381/" target="_blank" class="hover:text-[#0a66c2] transition hover:scale-125" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://x.com/Eshtha350815" target="_blank" class="hover:text-white transition hover:scale-125" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="mailto:eshthabanga@gmail.com" class="hover:text-red-400 transition hover:scale-125" title="Email"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+            <div class="w-full max-w-md flex items-center gap-3 text-xs text-gray-400 mt-1">
+                <span class="font-mono">0:00</span>
+                <div class="bg-gray-600 h-1.5 rounded-full overflow-hidden flex-1 group/bar cursor-pointer">
+                    <div class="bg-white group-hover/bar:bg-[var(--spotify-green)] w-3/4 h-full relative transition-colors"></div>
+                </div>
+                <span class="font-mono">∞:∞</span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4 w-1/4 md:w-1/3 justify-end text-gray-400">
+            <i class="fa-solid fa-microphone hover:text-white cursor-pointer transition hidden md:block" title="Lyrics (Blog)"></i>
+            <i class="fa-solid fa-bars hover:text-white cursor-pointer transition hidden md:block" title="Queue (Roadmap)"></i>
+            <i class="fa-solid fa-server hover:text-white cursor-pointer transition hidden lg:block" title="Connect to Device"></i>
+            <div class="flex items-center gap-2 group/vol cursor-pointer hidden md:flex">
+                <i class="fa-solid fa-volume-high group-hover/vol:text-white transition"></i>
+                <div class="w-24 bg-gray-600 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-gray-300 group-hover/vol:bg-[var(--spotify-green)] w-full h-full transition-colors"></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. Show More Logic ---
+        const toggleBtn = document.getElementById('toggle-projects');
+        const extraProjects = document.getElementById('extra-projects');
+
+        toggleBtn.addEventListener('click', () => {
+            extraProjects.classList.toggle('show');
+            if (extraProjects.classList.contains('show')) {
+                toggleBtn.innerText = 'Show Less Releases';
+            } else {
+                toggleBtn.innerText = 'Show All Releases';
+            }
+        });
+
+        // --- 2. Glass Header Effect ---
+        const scrollContainer = document.getElementById('scroll-container');
+        const mainHeader = document.getElementById('main-header');
+
+        scrollContainer.addEventListener('scroll', () => {
+            if (scrollContainer.scrollTop > 50) {
+                mainHeader.classList.add('scrolled');
+            } else {
+                mainHeader.classList.remove('scrolled');
+            }
+        });
+
+        // --- 3. 100% BULLETPROOF Scroll Reveal ---
+        // Mathematically checks element position to ensure they never stay hidden
+        const revealElements = document.querySelectorAll('.scroll-reveal');
+
+        function checkVisibility() {
+            revealElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                // If the top of the element is visible in the window, add the active class
+                if (rect.top <= window.innerHeight) {
+                    el.classList.add('is-visible');
+                }
+            });
+        }
+
+        // Run on scroll, on resize, AND immediately on page load
+        scrollContainer.addEventListener('scroll', checkVisibility);
+        window.addEventListener('resize', checkVisibility);
+        checkVisibility(); 
+    </script>
+</body>
+</html>
