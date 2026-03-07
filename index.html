@@ -13,7 +13,26 @@
         
         /* Layout */
         .sidebar { background-color: #000; width: 260px; z-index: 10; display: flex; flex-direction: column; height: calc(100vh - 100px); }
-        .main-view { background-color: var(--spotify-dark); border-radius: 12px; margin: 8px 8px 100px 8px; overflow-y: auto; height: calc(100vh - 116px); position: relative; scroll-behavior: smooth; }
+        
+        /* Adjusted Main View for Mobile Nav */
+        .main-view { 
+            background-color: var(--spotify-dark); 
+            overflow-y: auto; 
+            position: relative; 
+            scroll-behavior: smooth; 
+            height: 100vh;
+            padding-bottom: 150px; /* Space for mobile nav + mini player */
+            border-radius: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .main-view {
+                border-radius: 12px;
+                margin: 8px 8px 100px 8px;
+                height: calc(100vh - 116px);
+                padding-bottom: 0;
+            }
+        }
         
         /* Gradients & Backgrounds */
         .spotify-gradient { background: linear-gradient(180deg, rgba(29,185,84,0.3) 0%, var(--spotify-dark) 400px); }
@@ -24,7 +43,10 @@
         .card { background: var(--spotify-card); border-radius: 8px; padding: 20px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); height: 100%; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid transparent; }
         .card:hover { background: var(--spotify-card-hover); transform: translateY(-8px); border-color: rgba(29,185,84,0.3); box-shadow: 0 10px 30px -10px rgba(29,185,84,0.2); }
         .play-btn { background: var(--spotify-green); width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: all 0.3s ease; transform: translateY(15px); box-shadow: 0 8px 8px rgba(0,0,0,0.3); }
+        
+        @media (max-width: 768px) { .play-btn { opacity: 1; transform: translateY(0); } } /* Show play buttons on mobile */
         .card:hover .play-btn { opacity: 1; transform: translateY(0); }
+        
         .resume-btn { background: #fff; color: #000; font-weight: bold; border-radius: 50px; padding: 14px 36px; transition: transform 0.2s, background 0.2s; }
         .resume-btn:hover { transform: scale(1.05); background: #f0f0f0; }
 
@@ -58,6 +80,7 @@
 <body class="flex flex-col h-screen">
 
     <div class="flex flex-1 overflow-hidden">
+        
         <aside class="sidebar p-6 hidden md:flex">
             <div class="flex-shrink-0">
                 <div class="text-2xl font-bold flex items-center gap-3 mb-6 tracking-tighter hover:text-[var(--spotify-green)] transition cursor-pointer">
@@ -96,45 +119,45 @@
 
         <main class="main-view flex-1 spotify-gradient" id="scroll-container">
             
-            <header class="glass-header flex justify-between items-center" id="main-header">
+            <header class="glass-header flex justify-between items-center px-4 md:px-8 py-3 md:py-4" id="main-header">
                 <div class="flex gap-2">
-                    <button class="w-8 h-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center hover:bg-opacity-80 transition"><i class="fa-solid fa-chevron-left text-white"></i></button>
-                    <button class="w-8 h-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center hover:bg-opacity-80 transition"><i class="fa-solid fa-chevron-right text-white"></i></button>
+                    <button class="w-8 h-8 rounded-full bg-black bg-opacity-60 hidden md:flex justify-center items-center hover:bg-opacity-80 transition"><i class="fa-solid fa-chevron-left text-white"></i></button>
+                    <button class="w-8 h-8 rounded-full bg-black bg-opacity-60 hidden md:flex justify-center items-center hover:bg-opacity-80 transition"><i class="fa-solid fa-chevron-right text-white"></i></button>
                 </div>
-                <button class="bg-black bg-opacity-60 rounded-full py-1 px-3 text-sm font-bold flex items-center gap-2 hover:scale-105 transition border border-gray-700 text-white">
-                    <img src="profile.jpeg" class="w-6 h-6 rounded-full object-cover border border-gray-500"> Eshtha
+                <button class="bg-black bg-opacity-60 rounded-full py-1 px-3 text-sm font-bold flex items-center gap-2 hover:scale-105 transition border border-gray-700 text-white ml-auto md:ml-0">
+                    <img src="profile.jpeg" alt="" class="w-6 h-6 rounded-full object-cover border border-gray-500"> Eshtha
                 </button>
             </header>
 
-            <div class="p-8 relative">
-                <section id="home" class="flex flex-col md:flex-row items-end gap-10 mb-10 pt-4 scroll-reveal">
+            <div class="p-4 md:p-8 relative">
+                <section id="home" class="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 mb-10 pt-4 scroll-reveal text-center md:text-left">
                     
-                    <img src="profile.jpeg" alt="Eshtha Cover Art" class="shadow-2xl rounded-full w-56 h-56 object-cover border-8 border-[#121212] hover:scale-105 transition duration-500">
+                    <img src="profile.jpeg" alt="Eshtha Cover Art" class="shadow-2xl rounded-full w-48 h-48 md:w-56 md:h-56 object-cover border-8 border-[#121212] hover:scale-105 transition duration-500">
                         
-                    <div class="flex flex-col">
-                        <span class="text-sm font-bold uppercase tracking-widest text-white flex items-center gap-2 mb-2"><i class="fa-solid fa-circle-check text-blue-400 text-lg"></i> Verified Tech Prodigy</span>
-                        <h1 class="text-6xl md:text-9xl font-black my-2 tracking-tighter" style="text-shadow: 0 10px 30px rgba(0,0,0,0.5);">Eshtha</h1>
-                        <p class="text-gray-300 text-xl font-medium mt-2">Developer • AI/ML Specialist • CS Engineer</p>
+                    <div class="flex flex-col items-center md:items-start">
+                        <span class="text-xs md:text-sm font-bold uppercase tracking-widest text-white flex items-center gap-2 mb-2"><i class="fa-solid fa-circle-check text-blue-400 text-lg"></i> Verified Tech Prodigy</span>
+                        <h1 class="text-5xl md:text-9xl font-black my-2 tracking-tighter" style="text-shadow: 0 10px 30px rgba(0,0,0,0.5);">Eshtha</h1>
+                        <p class="text-gray-300 text-lg md:text-xl font-medium mt-2">Developer • AI/ML Specialist • CS Engineer</p>
                         <p class="text-gray-400 text-sm mt-2">1,000,000+ Lines of Code Written</p>
                     </div>
                 </section>
 
-                <div class="flex gap-6 mb-16 items-center scroll-reveal delay-100">
-                    <button class="text-7xl hover:scale-105 transition drop-shadow-lg"><i class="fa-solid fa-circle-play text-[var(--spotify-green)]"></i></button>
-                    <button class="resume-btn" onclick="window.open('https://1drv.ms/w/c/d0bc5f956f6d5bf2/IQCG63uA4I7JQZptZoHYQvdMAfMK7Ol2LXb072tyoW7x92k?e=KFcIfj', '_blank')">Follow (Resume)</button>
+                <div class="flex flex-wrap justify-center md:justify-start gap-4 md:gap-6 mb-16 items-center scroll-reveal delay-100">
+                    <button class="text-6xl md:text-7xl hover:scale-105 transition drop-shadow-lg"><i class="fa-solid fa-circle-play text-[var(--spotify-green)]"></i></button>
+                    <button class="resume-btn text-sm md:text-base px-6 py-3 md:px-9 md:py-4" onclick="window.open('https://1drv.ms/w/c/d0bc5f956f6d5bf2/IQCG63uA4I7JQZptZoHYQvdMAfMK7Ol2LXb072tyoW7x92k?e=KFcIfj', '_blank')">Follow (Resume)</button>
                     <button class="w-10 h-10 border border-gray-400 rounded-full flex items-center justify-center hover:border-white hover:text-white text-gray-400 transition text-xl"><i class="fa-solid fa-ellipsis"></i></button>
                 </div>
 
                 <section id="about" class="mb-16 scroll-reveal">
                     <h2 class="text-2xl font-bold mb-6 hover:underline cursor-pointer">About the Developer</h2>
-                    <div class="bg-gradient-to-r from-[#181818] to-[#121212] p-8 rounded-xl border border-gray-800 hover:border-gray-600 transition">
-                        <div class="inline-block mb-4">
-                            <p class="typing-text text-[var(--spotify-green)] font-mono text-lg">System.out.println("Hello, World!");</p>
+                    <div class="bg-gradient-to-r from-[#181818] to-[#121212] p-6 md:p-8 rounded-xl border border-gray-800 hover:border-gray-600 transition">
+                        <div class="inline-block mb-4 max-w-full overflow-hidden">
+                            <p class="typing-text text-[var(--spotify-green)] font-mono text-sm md:text-lg">System.out.println("Hello, World!");</p>
                         </div>
-                        <p class="text-gray-300 leading-relaxed text-lg mb-4">
+                        <p class="text-gray-300 leading-relaxed text-base md:text-lg mb-4">
                             I am a Computer Science Engineering student with a deep-rooted passion for Artificial Intelligence, Machine Learning, and Web Designing. My journey is fueled by a desire to build interactive, and highly functional digital experiences.
                         </p>
-                        <p class="text-gray-400 leading-relaxed">
+                        <p class="text-gray-400 leading-relaxed text-sm md:text-base">
                             When I'm not configuring neural networks or writing smart contracts, I'm contributing to the core tech teams at <strong class="text-white">Tech Tribe</strong> and leading tech administration at <strong class="text-white">Thrylos</strong>. I treat coding like composing music—every line should have a purpose, and the final product must resonate with the user.
                         </p>
                     </div>
@@ -142,68 +165,68 @@
 
                 <section class="mb-16">
                     <h2 class="text-2xl font-bold mb-6 hover:underline cursor-pointer scroll-reveal">Tech Stack</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-4">
+                    <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 md:gap-4">
                         
-                        <div class="card items-center text-center group scroll-reveal delay-100">
-                            <i class="fa-brands fa-html5 text-orange-500 text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">HTML5</p>
+                        <div class="card items-center text-center group scroll-reveal delay-100 !p-4 md:!p-5">
+                            <i class="fa-brands fa-html5 text-orange-500 text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">HTML5</p>
                         </div>
-                        <div class="card items-center text-center group scroll-reveal delay-200">
-                            <i class="fa-brands fa-css3-alt text-blue-500 text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">CSS3</p>
+                        <div class="card items-center text-center group scroll-reveal delay-200 !p-4 md:!p-5">
+                            <i class="fa-brands fa-css3-alt text-blue-500 text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">CSS3</p>
                         </div>
-                        <div class="card items-center text-center group scroll-reveal delay-300">
-                            <i class="fa-brands fa-js text-yellow-400 text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">JavaScript</p>
+                        <div class="card items-center text-center group scroll-reveal delay-300 !p-4 md:!p-5">
+                            <i class="fa-brands fa-js text-yellow-400 text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">JavaScript</p>
                         </div>
                         
-                        <div class="card items-center text-center group scroll-reveal delay-100">
-                            <i class="fa-brands fa-react text-blue-400 text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">React.js</p>
+                        <div class="card items-center text-center group scroll-reveal delay-100 !p-4 md:!p-5">
+                            <i class="fa-brands fa-react text-blue-400 text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">React.js</p>
                         </div>
-                        <div class="card items-center text-center group scroll-reveal delay-200">
-                            <i class="fa-brands fa-node-js text-green-500 text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">Node.js</p>
+                        <div class="card items-center text-center group scroll-reveal delay-200 !p-4 md:!p-5">
+                            <i class="fa-brands fa-node-js text-green-500 text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">Node.js</p>
                         </div>
-                        <div class="card items-center text-center group scroll-reveal delay-300">
-                            <i class="fa-solid fa-wind text-teal-400 text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">Tailwind</p>
+                        <div class="card items-center text-center group scroll-reveal delay-300 !p-4 md:!p-5">
+                            <i class="fa-solid fa-wind text-teal-400 text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">Tailwind</p>
                         </div>
 
-                        <div class="card items-center text-center group scroll-reveal delay-100">
-                            <i class="fa-brands fa-python text-yellow-500 text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">Python</p>
+                        <div class="card items-center text-center group scroll-reveal delay-100 !p-4 md:!p-5">
+                            <i class="fa-brands fa-python text-yellow-500 text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">Python</p>
                         </div>
-                        <div class="card items-center text-center group scroll-reveal delay-200">
-                            <i class="fa-solid fa-brain text-pink-400 text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">Pandas & NumPy</p>
+                        <div class="card items-center text-center group scroll-reveal delay-200 !p-4 md:!p-5">
+                            <i class="fa-solid fa-brain text-pink-400 text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">Pandas</p>
                         </div>
-                        <div class="card items-center text-center group scroll-reveal delay-300">
-                            <i class="fa-solid fa-c text-blue-600 text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">C++</p>
+                        <div class="card items-center text-center group scroll-reveal delay-300 !p-4 md:!p-5">
+                            <i class="fa-solid fa-c text-blue-600 text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">C++</p>
                         </div>
                         
-                        <div class="card items-center text-center group scroll-reveal delay-200">
-                            <i class="fa-brands fa-git-alt text-red-500 text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">Git</p>
+                        <div class="card items-center text-center group scroll-reveal delay-200 !p-4 md:!p-5">
+                            <i class="fa-brands fa-git-alt text-red-500 text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">Git</p>
                         </div>
-                        <div class="card items-center text-center group scroll-reveal delay-300">
-                            <i class="fa-brands fa-github text-white text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">GitHub</p>
+                        <div class="card items-center text-center group scroll-reveal delay-300 !p-4 md:!p-5">
+                            <i class="fa-brands fa-github text-white text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">GitHub</p>
                         </div>
-                        <div class="card items-center text-center group scroll-reveal delay-100">
-                            <i class="fa-brands fa-figma text-orange-400 text-5xl mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">Figma</p>
+                        <div class="card items-center text-center group scroll-reveal delay-100 !p-4 md:!p-5">
+                            <i class="fa-brands fa-figma text-orange-400 text-4xl md:text-5xl mb-3 group-hover:scale-110 transition"></i>
+                            <p class="font-bold text-xs md:text-base">Figma</p>
                         </div>
 
                     </div>
                 </section>
 
-                <section class="mb-16 scroll-reveal">
+                <section class="mb-16 scroll-reveal w-full overflow-hidden">
                     <h2 class="text-2xl font-bold mb-6 hover:underline cursor-pointer">GitHub Activity</h2>
-                    <div class="bg-[#181818] p-8 rounded-xl overflow-hidden flex flex-col xl:flex-row gap-6 items-center justify-center border border-gray-800 hover:border-gray-600 transition shadow-2xl">
-                        <img src="https://github-readme-stats.vercel.app/api?username=Eshtha&show_icons=true&theme=tokyonight&hide_border=true&bg_color=181818&title_color=1db954" alt="GitHub Stats" class="w-full xl:w-1/2 rounded hover:scale-105 transition duration-500">
-                        <img src="https://github-readme-streak-stats.herokuapp.com/?user=Eshtha&theme=tokyonight&hide_border=true&background=181818&ring=1db954&fire=1db954&currStreakLabel=1db954" alt="GitHub Streak" class="w-full xl:w-1/2 rounded hover:scale-105 transition duration-500">
+                    <div class="bg-[#181818] p-4 md:p-8 rounded-xl flex flex-col xl:flex-row gap-6 items-center justify-center border border-gray-800 hover:border-gray-600 transition shadow-2xl w-full">
+                        <img src="https://github-readme-stats.vercel.app/api?username=Eshtha&show_icons=true&theme=tokyonight&hide_border=true&bg_color=181818&title_color=1db954" alt="GitHub Stats" class="w-full xl:w-1/2 max-w-full rounded hover:scale-105 transition duration-500 object-contain">
+                        <img src="https://github-readme-streak-stats.herokuapp.com/?user=Eshtha&theme=tokyonight&hide_border=true&background=181818&ring=1db954&fire=1db954&currStreakLabel=1db954" alt="GitHub Streak" class="w-full xl:w-1/2 max-w-full rounded hover:scale-105 transition duration-500 object-contain">
                     </div>
                 </section>
 
@@ -216,10 +239,10 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                         <a href="https://blockademia.live" target="_blank" class="block h-full scroll-reveal delay-100">
                             <div class="card relative group">
-                                <div class="h-48 bg-gradient-to-br from-purple-900 via-gray-900 to-black rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                                    <i class="fa-solid fa-cube text-7xl text-purple-400 group-hover:scale-125 group-hover:rotate-12 transition duration-500"></i>
+                                <div class="h-40 md:h-48 bg-gradient-to-br from-purple-900 via-gray-900 to-black rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                                    <i class="fa-solid fa-cube text-6xl md:text-7xl text-purple-400 group-hover:scale-125 group-hover:rotate-12 transition duration-500"></i>
                                 </div>
-                                <div class="play-btn absolute top-40 right-6 shadow-xl">
+                                <div class="play-btn absolute top-32 md:top-40 right-6 shadow-xl">
                                     <i class="fa-solid fa-play text-black text-xl ml-1"></i>
                                 </div>
                                 <h3 class="font-bold text-xl mb-1 truncate">Blockademia</h3>
@@ -233,10 +256,10 @@
 
                         <a href="https://end-sem-slayer.vercel.app/" target="_blank" class="block h-full scroll-reveal delay-200">
                             <div class="card relative group">
-                                <div class="h-48 bg-gradient-to-br from-red-900 via-gray-900 to-black rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                                    <i class="fa-solid fa-book-skull text-7xl text-red-400 group-hover:scale-125 group-hover:-rotate-12 transition duration-500"></i>
+                                <div class="h-40 md:h-48 bg-gradient-to-br from-red-900 via-gray-900 to-black rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                                    <i class="fa-solid fa-book-skull text-6xl md:text-7xl text-red-400 group-hover:scale-125 group-hover:-rotate-12 transition duration-500"></i>
                                 </div>
-                                <div class="play-btn absolute top-40 right-6 shadow-xl">
+                                <div class="play-btn absolute top-32 md:top-40 right-6 shadow-xl">
                                     <i class="fa-solid fa-play text-black text-xl ml-1"></i>
                                 </div>
                                 <h3 class="font-bold text-xl mb-1 truncate">End Sem Slayer</h3>
@@ -250,10 +273,10 @@
 
                         <a href="https://dream-space-ruddy.vercel.app/" target="_blank" class="block h-full scroll-reveal delay-300">
                             <div class="card relative group">
-                                <div class="h-48 bg-gradient-to-br from-blue-900 via-gray-900 to-black rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                                    <i class="fa-solid fa-user-astronaut text-7xl text-blue-400 group-hover:scale-125 group-hover:rotate-12 transition duration-500"></i>
+                                <div class="h-40 md:h-48 bg-gradient-to-br from-blue-900 via-gray-900 to-black rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                                    <i class="fa-solid fa-user-astronaut text-6xl md:text-7xl text-blue-400 group-hover:scale-125 group-hover:rotate-12 transition duration-500"></i>
                                 </div>
-                                <div class="play-btn absolute top-40 right-6 shadow-xl">
+                                <div class="play-btn absolute top-32 md:top-40 right-6 shadow-xl">
                                     <i class="fa-solid fa-play text-black text-xl ml-1"></i>
                                 </div>
                                 <h3 class="font-bold text-xl mb-1 truncate">DreamSpace</h3>
@@ -282,7 +305,7 @@
                                 <div class="h-40 bg-gray-800 rounded-lg mb-4 flex items-center justify-center">
                                     <i class="fa-solid fa-plane-departure text-5xl text-gray-400 group-hover:text-white transition"></i>
                                 </div>
-                                <div class="play-btn absolute top-40 right-6 shadow-xl">
+                                <div class="play-btn absolute top-32 md:top-40 right-6 shadow-xl">
                                     <i class="fa-solid fa-play text-black text-xl ml-1"></i>
                                 </div>
                                 <h3 class="font-bold text-lg mb-1">Travel Agency App</h3>
@@ -300,8 +323,8 @@
 
                 <section class="mt-20 pt-10 border-t border-gray-800 scroll-reveal text-center">
                     <h2 class="text-3xl font-black mb-4">Ready to Collaborate?</h2>
-                    <p class="text-gray-400 mb-8 max-w-lg mx-auto">Whether you want to discuss AI models, brainstorm a Web App Idea, or just talk tech, my inbox is always open.</p>
-                    <a href="mailto:your.email@example.com" class="inline-block bg-white text-black font-bold rounded-full px-10 py-4 hover:scale-105 transition hover:bg-gray-200">
+                    <p class="text-gray-400 mb-8 max-w-lg mx-auto px-4">Whether you want to discuss AI models, brainstorm a Web App Idea, or just talk tech, my inbox is always open.</p>
+                    <a href="mailto:eshthabanga@gmail.com" class="inline-block bg-white text-black font-bold rounded-full px-10 py-4 hover:scale-105 transition hover:bg-gray-200">
                         Email Me
                     </a>
                 </section>
@@ -311,29 +334,36 @@
         </main>
     </div>
 
-    <footer class="h-[100px] bg-black border-t border-[#282828] fixed bottom-0 w-full px-4 flex items-center justify-between z-50">
-        <div class="flex items-center gap-4 w-1/4 md:w-1/3 group">
-            <div class="relative overflow-hidden rounded shadow-lg">
-                <img src="profile.jpeg" alt="Album Art" class="w-16 h-16 object-cover group-hover:scale-110 transition duration-500 border border-gray-800">
-                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+    <footer class="fixed bottom-[74px] left-2 right-2 md:bottom-0 md:left-0 md:right-0 w-auto md:w-full h-[60px] md:h-[100px] bg-[#282828] md:bg-black rounded-lg md:rounded-none border md:border-t border-gray-800 md:border-[#282828] px-3 md:px-4 flex items-center justify-between z-50 shadow-2xl md:shadow-none transition-all">
+        <div class="flex items-center gap-3 md:gap-4 w-1/2 md:w-1/4 group">
+            <div class="relative overflow-hidden rounded shadow-lg flex-shrink-0">
+                <img src="profile.jpeg" alt="Album Art" class="w-10 h-10 md:w-16 md:h-16 object-cover group-hover:scale-110 transition duration-500 border border-gray-800">
+                <div class="absolute inset-0 bg-black bg-opacity-50 hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
                     <i class="fa-solid fa-chevron-up text-white"></i>
                 </div>
             </div>
-            <div class="hidden md:block">
-                <p class="text-sm font-semibold text-white cursor-pointer hover:underline">Eshtha Banga</p>
-                <p class="text-xs text-gray-400 cursor-pointer hover:underline">Developer Mode: ON</p>
+            <div class="truncate">
+                <p class="text-sm font-semibold text-white cursor-pointer hover:underline truncate">Eshtha Banga</p>
+                <p class="text-[10px] md:text-xs text-gray-400 cursor-pointer hover:underline truncate">Developer Mode: ON</p>
             </div>
             <i class="fa-solid fa-heart text-[var(--spotify-green)] cursor-pointer hover:scale-110 transition hidden md:block"></i>
         </div>
 
-        <div class="flex flex-col items-center gap-2 w-2/4 md:w-1/3">
-            <div class="flex items-center gap-6 md:gap-8 text-2xl text-gray-400">
+        <div class="flex flex-col items-center gap-2 w-auto md:w-2/4">
+            
+            <div class="flex md:hidden text-white items-center gap-4 text-xl">
+                <i class="fa-solid fa-heart text-[var(--spotify-green)]"></i>
+                <i class="fa-solid fa-play"></i>
+            </div>
+
+            <div class="hidden md:flex items-center gap-6 md:gap-8 text-2xl text-gray-400">
                 <a href="https://github.com/Eshtha" target="_blank" class="hover:text-white transition hover:scale-125" title="GitHub"><i class="fa-brands fa-github"></i></a>
                 <a href="https://www.linkedin.com/in/eshtha-banga-4aa9b3381/" target="_blank" class="hover:text-[#0a66c2] transition hover:scale-125" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
                 <a href="https://x.com/Eshtha350815" target="_blank" class="hover:text-white transition hover:scale-125" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
                 <a href="mailto:eshthabanga@gmail.com" class="hover:text-red-400 transition hover:scale-125" title="Email"><i class="fa-solid fa-envelope"></i></a>
             </div>
-            <div class="w-full max-w-md flex items-center gap-3 text-xs text-gray-400 mt-1">
+
+            <div class="hidden md:flex w-full max-w-md items-center gap-3 text-xs text-gray-400 mt-1">
                 <span class="font-mono">0:00</span>
                 <div class="bg-gray-600 h-1.5 rounded-full overflow-hidden flex-1 group/bar cursor-pointer">
                     <div class="bg-white group-hover/bar:bg-[var(--spotify-green)] w-3/4 h-full relative transition-colors"></div>
@@ -342,7 +372,7 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-4 w-1/4 md:w-1/3 justify-end text-gray-400">
+        <div class="hidden md:flex items-center gap-4 w-1/4 md:w-1/3 justify-end text-gray-400">
             <i class="fa-solid fa-microphone hover:text-white cursor-pointer transition hidden md:block" title="Lyrics (Blog)"></i>
             <i class="fa-solid fa-bars hover:text-white cursor-pointer transition hidden md:block" title="Queue (Roadmap)"></i>
             <i class="fa-solid fa-server hover:text-white cursor-pointer transition hidden lg:block" title="Connect to Device"></i>
@@ -354,6 +384,25 @@
             </div>
         </div>
     </footer>
+
+    <nav class="md:hidden fixed bottom-0 w-full bg-black border-t border-gray-900 z-50 flex justify-around items-center h-[64px] pb-safe shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+        <a href="#home" class="flex flex-col items-center gap-1 text-white p-2 w-16">
+            <i class="fa-solid fa-house text-xl"></i>
+            <span class="text-[10px] font-medium mt-1">Home</span>
+        </a>
+        <a href="#about" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white transition p-2 w-16">
+            <i class="fa-solid fa-user text-xl"></i>
+            <span class="text-[10px] font-medium mt-1">About</span>
+        </a>
+        <a href="#projects" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white transition p-2 w-16">
+            <i class="fa-solid fa-compact-disc text-xl"></i>
+            <span class="text-[10px] font-medium mt-1">Projects</span>
+        </a>
+        <a href="https://github.com/Eshtha" target="_blank" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white transition p-2 w-16">
+            <i class="fa-brands fa-github text-xl"></i>
+            <span class="text-[10px] font-medium mt-1">GitHub</span>
+        </a>
+    </nav>
 
     <script>
         // --- 1. Show More Logic ---
@@ -382,20 +431,17 @@
         });
 
         // --- 3. 100% BULLETPROOF Scroll Reveal ---
-        // Mathematically checks element position to ensure they never stay hidden
         const revealElements = document.querySelectorAll('.scroll-reveal');
 
         function checkVisibility() {
             revealElements.forEach(el => {
                 const rect = el.getBoundingClientRect();
-                // If the top of the element is visible in the window, add the active class
                 if (rect.top <= window.innerHeight) {
                     el.classList.add('is-visible');
                 }
             });
         }
 
-        // Run on scroll, on resize, AND immediately on page load
         scrollContainer.addEventListener('scroll', checkVisibility);
         window.addEventListener('resize', checkVisibility);
         checkVisibility(); 
