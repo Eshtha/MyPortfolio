@@ -2,6 +2,21 @@
 
 > "Coding is my craft and this is my mixtape—a Spotify-inspired portfolio showcasing my journey through AI, ML, and Web3."
 
+## 📖 About The Project
+
+This is a personal portfolio website designed to mimic the **Spotify Web Player** interface. Instead of songs and albums, it features **code and projects**.
+
+It is built to be a fully immersive experience for recruiters and fellow developers, featuring a "glassmorphism" aesthetic, butter-smooth scroll animations, and a responsive layout that works on desktop and mobile.
+
+### ✨ Key Features
+
+* **🎧 Immersive UI:** A pixel-perfect recreation of the dark-themed music player interface.
+* **⚡ Zero-Lag Animations:** Custom JavaScript `IntersectionObserver` logic for bulletproof scroll reveal effects.
+* **📱 Fully Responsive:** Sidebar collapses and layout adjusts for mobile devices.
+* **🎨 Dynamic Tech Stack:** Grid layout displaying skills (Python, React, Web3, etc.) with hover effects.
+* **📂 Project "Discography":** Interactive cards for projects like *Blockademia*, *End Sem Slayer*, and *DreamSpace*.
+* **🐦 Social Integration:** updated FontAwesome 6.5.1 support for the new X (Twitter) logo.
+
 ## 🛠️ Tech Stack
 
 This project is built with a focus on performance and simplicity, requiring no complex build steps to run.
