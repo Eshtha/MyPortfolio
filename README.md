@@ -15,7 +15,7 @@ It is built to be a fully immersive experience for recruiters and fellow develop
 * **📱 Fully Responsive:** Sidebar collapses and layout adjusts for mobile devices.
 * **🎨 Dynamic Tech Stack:** Grid layout displaying skills (Python, React, Web3, etc.) with hover effects.
 * **📂 Project "Discography":** Interactive cards for projects like *Blockademia*, *End Sem Slayer*, and *DreamSpace*.
-* **🐦 Social Integration:** updated FontAwesome 6.5.1 support for the new X (Twitter) logo.
+* **🐦 Social Integration:** updated FontAwesome 6.5.1 support for the new X logo.
 
 ## 🛠️ Tech Stack
 
